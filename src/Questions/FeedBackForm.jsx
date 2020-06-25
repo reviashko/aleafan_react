@@ -40,7 +40,7 @@ export default function Question(props) {
         //console.log('Успех:', JSON.stringify(json));
 
       } catch (error) {
-        //console.error('Ошибка:', error);
+        console.error('Ошибка:', error);
       }
 
     })();
