@@ -16,12 +16,15 @@ export default function PollForm(props) {
 
   const [questionItems, setQuestionItems] = useState([])
   const [answeredItems, setAnsweredItems] = useState([])
+  const [answeredIds, setAnsweredIds] = useState([])
   const [showErrorAlert, setShowErrorAlert] = useState(false)
   const [showResult, setShowResult] = useState(false)
   const [pollResultData, setPollResultData] = useState({})
+  const [userID, setUserID] = useState("")
   const classes = useStyles();
 
   useEffect(() => {
+    setUserID(props.UserID);
     loadQuestionItems(props.UserID);
   },[props.UserID]);
 
@@ -46,20 +49,27 @@ export default function PollForm(props) {
   }
 
   const parentCallBack = (qst_id, answer) =>{
-    answeredItems.push({qst_id:qst_id, answer:answer})
-    setAnsweredItems(answeredItems)
 
+    if(!answeredIds.includes(qst_id)){
+      answeredIds.push(qst_id)
+      setAnsweredIds(answeredIds)
+      answeredItems.push({qst_id:qst_id, answer:answer})
+      setAnsweredItems(answeredItems)
+    }
+
+    console.log(answeredItems);
+    
     if(answeredItems.length === questionItems.length){
-      saveResultToServer(answeredItems, props.UserID)
+      saveResultToServer(answeredItems)
     }
   }
 
-  const saveResultToServer = (answers, userID) =>{
+  const saveResultToServer = (answers) =>{
     (async () => {
       try {
         const response = await fetch(props.Host + "/savesurvey/", {
           method: 'POST',
-          body: JSON.stringify({userid: parseInt(userID), answers: answers}),
+          body: JSON.stringify({userid: userID, answers: answers}),
         });
 
         const json = await response.json();
@@ -82,7 +92,7 @@ export default function PollForm(props) {
       }
       {
         showResult
-        ? <PollResult Host={props.Host} Data={pollResultData} UserID={props.UserID} />
+        ? <PollResult Host={props.Host} Data={pollResultData} UserID={userID} />
         : ''
       }
       <Collapse in={showErrorAlert}>

@@ -33,7 +33,7 @@ export default function Question(props) {
       try {
         const response = await fetch(props.Host + "/savesurveyfeedback/", {
           method: 'POST',
-          body: JSON.stringify({userid: parseInt(props.UserID), answer: feedBackValue}),
+          body: JSON.stringify({userid: props.UserID, answer: feedBackValue}),
         });
 
         const json = await response.json();

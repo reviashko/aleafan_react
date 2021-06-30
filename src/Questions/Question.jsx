@@ -15,11 +15,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const marks = [ { value: -1, label: '>>', },
-                { value: 0, label: '-', },
+const marks = [ { value: -1, label: '', },
+                { value: 0, label: '---', },
                 { value: 1, label: '--+', },
                 { value: 2, label: '-++', },
-                { value: 3, label: '+', },
+                { value: 3, label: '+++', },
               ];
 
 export default function Question(props) {
